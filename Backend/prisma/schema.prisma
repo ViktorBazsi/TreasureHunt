@@ -1,0 +1,69 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String               @id @default(cuid())
+
+  username  String               @unique
+  email     String               @unique
+  password  String
+
+  progress  UserTreasureProgress[]
+}
+
+model Treasure {
+  id          String               @id @default(cuid())
+
+  number      Int
+  question    String
+
+  hint        String?
+
+  answer      String?
+  correctAns  String
+
+  companyId   String
+  company     Company              @relation(fields: [companyId], references: [id])
+
+  progress    UserTreasureProgress[]
+}
+
+model UserTreasureProgress {
+  id          String     @id @default(cuid())
+
+  userId      String
+  user        User       @relation(fields: [userId], references: [id])
+
+  treasureId  String
+  treasure    Treasure   @relation(fields: [treasureId], references: [id])
+
+  isOpen      Boolean    @default(false)
+
+  @@unique([userId, treasureId]) // Egy user csak egyszer szerepelhet adott kincsnél
+}
+
+
+model Company {
+  id          String        @id @default(cuid())
+
+  name        String
+  link        String
+  
+  email       String        @unique
+  gift        String
+
+  tresures    Treasure[]
+}
