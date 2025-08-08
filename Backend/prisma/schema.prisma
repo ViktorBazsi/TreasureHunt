@@ -37,8 +37,8 @@ model Treasure {
   answer      String?
   correctAns  String
 
-  companyId   String
-  company     Company              @relation(fields: [companyId], references: [id])
+  companyId   String?
+  company     Company?              @relation(fields: [companyId], references: [id])
 
   progress    UserTreasureProgress[]
 }

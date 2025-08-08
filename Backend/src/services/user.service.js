@@ -37,6 +37,9 @@ const list = async () => {
 const getById = async (id) => {
   const userById = await prisma.user.findUnique({
     where: { id },
+    include: {
+      progress: true,
+    },
   });
   return userById;
 };

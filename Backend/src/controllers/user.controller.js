@@ -4,7 +4,7 @@ import HttpError from "../utils/HttpError.js";
 import { extractUserIdFromToken } from "../utils/validation.utils.js";
 
 const create = async (req, res, next) => {
-  const { username, email, password, lastName, firstName } = req.body;
+  const { username, email, password } = req.body;
   try {
     const newUser = await userService.create({
       username,

@@ -34,11 +34,20 @@ export const extractUserIdFromToken = (req, JWT_SECRET) => {
   }
 };
 
-// HOUSEHOLD
-export const isValidHouseholdId = async (id) => {
-  const household = await prisma.household.findUnique({
+// TREASURE
+export const isValidTreasureId = async (id) => {
+  const treasure = await prisma.treasure.findUnique({
     where: { id },
   });
-  if (!household) throw new HttpError("household id nem található!", 404);
-  return household;
+  if (!treasure) throw new HttpError("treasure id nem található!", 404);
+  return treasure;
+};
+
+// COMPANY
+export const isValidCompanyId = async (id) => {
+  const company = await prisma.company.findUnique({
+    where: { id },
+  });
+  if (!company) throw new HttpError("company id nem található!", 404);
+  return company;
 };

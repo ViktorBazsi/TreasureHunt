@@ -7,6 +7,8 @@ import errorHandler from "./middleware/error-handler.middleware.js";
 import authRoutes from "./routes/auth.routes.js";
 // ROUTES
 import userRoutes from "./routes/user.routes.js";
+import treasureRoutes from "./routes/treasure.route.js";
+import companyRoutes from "./routes/company.routes.js";
 
 const app = express();
 
@@ -19,6 +21,8 @@ app.use("/auth", authRoutes);
 
 // ROUTES
 app.use("/api/user", userRoutes);
+app.use("/api/treasure", treasureRoutes);
+app.use("/api/company", companyRoutes);
 
 app.use(errorHandler);
 
