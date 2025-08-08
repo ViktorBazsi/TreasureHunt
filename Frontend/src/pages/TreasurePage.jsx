@@ -10,20 +10,20 @@ function TreasuresPage() {
     try {
       const data = await progressService.getMyProgress();
       setProgress(data);
-    } catch (err) {
-      console.error("Hiba a progress betöltésekor:", err);
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchProgress();
-  }, []);
+  useEffect(() => { fetchProgress(); }, []);
 
-  if (loading) return <p>Betöltés...</p>;
+  if (loading) return <p className="section">Betöltés...</p>;
 
-  return <TreasuresList progress={progress} onTreasureOpened={fetchProgress} />;
+  return (
+    <div className="section">
+      <h2 className="text-2xl text-c-secondary-dark font-bold mb-6">Kincsek</h2>
+      <TreasuresList progress={progress} onTreasureOpened={fetchProgress} />
+    </div>
+  );
 }
-
 export default TreasuresPage;

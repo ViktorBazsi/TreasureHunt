@@ -1,22 +1,24 @@
 import { useNavigate } from "react-router-dom";
+import { InverseCard } from "./ui/Card";
+import Button from "./ui/Button";
 
 function CompanyCard({ company }) {
   const navigate = useNavigate();
 
   return (
-    <div className="p-4 border rounded-xl shadow bg-white hover:shadow-md transition flex flex-col justify-between">
+    <InverseCard className="hover:shadow-md transition flex flex-col justify-between">
       <div>
-        <h3 className="text-xl font-semibold mb-2 text-blue-700">
+        <h3 className="text-xl font-semibold mb-2 text-c-primary-light">
           {company.name}
         </h3>
-        <p className="text-gray-700 mb-1">
+        <p className="text-white mb-1">
           🎁 Ajándék: <span className="font-medium">{company.gift}</span>
         </p>
-        <p className="text-sm text-gray-500 italic">
+        <p className="text-sm text-c-primary-dark italic">
           Kapcsolat:{" "}
           <a
             href={`mailto:${company.email}`}
-            className="text-blue-600 hover:underline"
+            className="text-c-primary hover:text-c-primary-light underline-offset-2 hover:underline"
           >
             {company.email}
           </a>
@@ -27,7 +29,7 @@ function CompanyCard({ company }) {
               href={company.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-blue-600 hover:underline"
+              className="text-sm text-c-accent hover:brightness-110 underline-offset-2 hover:underline"
             >
               Weboldal megtekintése
             </a>
@@ -35,14 +37,13 @@ function CompanyCard({ company }) {
         )}
       </div>
 
-      <button
+      <Button
+        className="mt-4"
         onClick={() => navigate(`/companies/${company.id}/treasures`)}
-        className="mt-4 bg-blue-600 text-white rounded-xl px-4 py-2 text-sm font-semibold hover:bg-blue-700 transition"
       >
         Kincsek megtekintése
-      </button>
-    </div>
+      </Button>
+    </InverseCard>
   );
 }
-
 export default CompanyCard;

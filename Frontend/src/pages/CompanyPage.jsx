@@ -7,23 +7,22 @@ function CompanyPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchCompanies = async () => {
+    (async () => {
       try {
-        const data = await companyService.listCompanies();
-        setCompanies(data);
-      } catch (err) {
-        console.error("Hiba a cégek betöltésekor:", err);
+        setCompanies(await companyService.listCompanies());
       } finally {
         setLoading(false);
       }
-    };
-
-    fetchCompanies();
+    })();
   }, []);
 
-  if (loading) return <p className="text-center mt-10">Betöltés...</p>;
+  if (loading) return <p className="section">Betöltés...</p>;
 
-  return <CompanyList companies={companies} />;
+  return (
+    <div className="section">
+      <h2 className="text-2xl font-bold mb-6 text-c-secondary-dark">Erzsébetvárosi független színházak</h2>
+      <CompanyList companies={companies} />
+    </div>
+  );
 }
-
 export default CompanyPage;

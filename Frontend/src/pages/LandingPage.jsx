@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../contexts/AuthContext";
 import progressService from "../services/progress.service";
+import Button from "../components/ui/Button";
 
 function LandingPage() {
   const { user } = useContext(AuthContext);
@@ -10,65 +11,53 @@ function LandingPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProgress = async () => {
-      if (user) {
-        try {
-          const data = await progressService.getMyProgress();
-          setProgress(data);
-        } catch (err) {
-          console.error("Hiba a progress lekérésekor:", err);
-        }
+    const load = async () => {
+      if (!user) return setLoading(false);
+      try {
+        const data = await progressService.getMyProgress();
+        setProgress(data);
+      } finally {
         setLoading(false);
       }
     };
-
-    fetchProgress();
+    load();
   }, [user]);
 
   const handleStartOrContinue = async () => {
-    try {
-      await progressService.beginProgress();
-    } catch (err) {
-      console.error("Hiba a játék kezdésekor:", err);
-      return;
+    if (progress.length === 0) {
+      try {
+        await progressService.beginProgress();
+      } catch {}
     }
-
     navigate("/treasures");
   };
 
   return (
-    <main className="flex flex-col items-center justify-center text-center px-4 py-24 min-h-screen bg-gray-50 text-gray-800">
+    <main className="section min-h-screen flex flex-col items-center justify-center text-center">
       <h2 className="text-4xl font-bold mb-4">Üdvözöl a TreasureHunt!</h2>
-      <p className="text-lg max-w-xl mb-8 text-gray-600">
+      <p className="text-lg max-w-xl mb-8 text-c-secondary-dark">
         Találd meg az összes kincset, hogy egy exkluzív előadást nyerhess a
         nappalidba!
       </p>
 
       {!user ? (
-        <div>
-          <button
-            onClick={() => navigate("/login")}
-            className="w-full bg-black text-white rounded-xl px-6 py-3 font-semibold hover:bg-gray-800 transition"
-          >
+        <div className="w-full max-w-md">
+          <Button block onClick={() => navigate("/login")}>
             Bejelentkezés
-          </button>
+          </Button>
         </div>
       ) : (
-        <div className="w-full max-w-4xl space-y-6">
+        <div className="w-full max-w-md">
           {loading ? (
-            <p>Betöltés...</p>
+            <p>Betöltés…</p>
           ) : (
-            <button
-              onClick={handleStartOrContinue}
-              className="w-2/3 bg-black text-white rounded-xl px-6 py-3 font-semibold hover:bg-gray-800 transition"
-            >
+            <Button block onClick={handleStartOrContinue}>
               {progress.length === 0 ? "Kezdés" : "Folytatás"}
-            </button>
+            </Button>
           )}
         </div>
       )}
     </main>
   );
 }
-
 export default LandingPage;

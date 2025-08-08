@@ -2,6 +2,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import treasureService from "../services/treasure.service";
+import Button from "./ui/Button";
 
 const validationSchema = Yup.object({
   answer: Yup.string().required("Kérlek, add meg a válaszod!"),
@@ -13,17 +14,17 @@ function TreasureAnswerForm({ treasureId, disabled, onSuccess }) {
       const res = await treasureService.checkAnswer(treasureId, values.answer);
       const message = res.message;
 
-      if (message === "Helyes válasz!") {
+      if (message?.toLowerCase().includes("helyes")) {
         toast.success(message);
         resetForm();
-
-        // ✅ Jelzés a szülő komponensnek, hogy sikeres
-        if (onSuccess) onSuccess();
+        onSuccess?.();
       } else {
         toast.warning("❌ Helytelen válasz. Próbáld újra!");
       }
     } catch (err) {
-      toast.error(`Hiba: ${err.message}`);
+      const backendMessage =
+        err?.response?.data?.message || err?.response?.data?.error;
+      toast.error(backendMessage || "Valami hiba történt.");
     } finally {
       setSubmitting(false);
     }
@@ -46,31 +47,30 @@ function TreasureAnswerForm({ treasureId, disabled, onSuccess }) {
       {({ isSubmitting }) => (
         <Form className="space-y-4">
           <div>
-            <label htmlFor="answer" className="block font-medium">
-              Válasz:
+            <label htmlFor="answer" className="block font-medium mb-1">
+              Válasz
             </label>
             <Field
               name="answer"
               type="text"
-              className="w-full border rounded-md px-3 py-2"
+              className="w-full rounded-xl px-3 py-2
+             bg-white text-c-secondary-darkest placeholder:text-c-secondary-light
+             border border-c-secondary-darkest
+             focus:outline-none focus:ring-2 focus:ring-c-primary focus:border-c-primary-dark"
             />
             <ErrorMessage
               name="answer"
               component="div"
-              className="text-red-600 text-sm"
+              className="text-c-warning text-sm mt-1"
             />
           </div>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full bg-black text-white rounded-xl px-6 py-3 font-semibold hover:bg-gray-800 transition"
-          >
+
+          <Button type="submit" disabled={isSubmitting} className="w-full">
             Beküldés
-          </button>
+          </Button>
         </Form>
       )}
     </Formik>
   );
 }
-
 export default TreasureAnswerForm;

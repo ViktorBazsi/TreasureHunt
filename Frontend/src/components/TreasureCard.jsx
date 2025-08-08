@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { InverseCard } from "./ui/Card";
 import TreasureCardModal from "./TreasureCardModal";
 
 function TreasureCard({ treasure, isOpen, onTreasureOpened }) {
@@ -11,23 +12,23 @@ function TreasureCard({ treasure, isOpen, onTreasureOpened }) {
 
   return (
     <>
-      <div
+      <InverseCard
         onClick={() => setIsModalOpen(true)}
-        className={`p-4 border rounded-xl shadow cursor-pointer transition ${
-          isOpen ? "bg-green-100" : "bg-white hover:shadow-lg"
+        className={`cursor-pointer transition ${
+          isOpen ? "bg-green-100" : "hover:shadow-lg"
         }`}
       >
-        <h3 className="text-xl font-semibold mb-2">Kincs #{treasure.number}</h3>
-        <p className="text-gray-700">{treasure.question}</p>
+        <h4 className="text-lg text-c-primary-light font-semibold mb-2">Kincs #{treasure.number}</h4>
+        <p className="text-white">{treasure.question}</p>
         {isOpen && (
-          <p className="text-green-700 mt-2">
+          <p className="text-gray-100 mt-2">
             ✅ Helyes válasz: <strong>{treasure.correctAns}</strong>
           </p>
         )}
-        <p className="text-sm text-gray-500 italic">
+        <p className="text-sm text-gray-50 italic mt-2">
           {isOpen ? "✔️ Megnyitva" : "🔒 Zárva"}
         </p>
-      </div>
+      </InverseCard>
 
       {isModalOpen && (
         <TreasureCardModal
@@ -40,5 +41,4 @@ function TreasureCard({ treasure, isOpen, onTreasureOpened }) {
     </>
   );
 }
-
 export default TreasureCard;
