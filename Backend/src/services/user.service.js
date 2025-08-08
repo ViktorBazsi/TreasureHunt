@@ -61,10 +61,30 @@ const destroy = async (id) => {
   return deletedUser;
 };
 
+// EXTRA:
+const getProgressByUserId = async (userId) => {
+  await isValidUserId(userId);
+
+  const progress = await prisma.userTreasureProgress.findMany({
+    where: { userId },
+    include: {
+      treasure: {
+        include: {
+          company: true,
+        },
+      }, // hogy a frontend tudjon kérdést és számot is megjeleníteni
+    },
+  });
+
+  return progress;
+};
+
 export default {
   create,
   list,
   getById,
   update,
   destroy,
+  // EXTRA
+  getProgressByUserId,
 };

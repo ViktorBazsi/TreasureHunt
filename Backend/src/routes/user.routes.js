@@ -8,6 +8,12 @@ const router = express.Router();
 router.post("/", userController.create);
 // GET
 router.get("/", authMiddleware.authenticate, userController.list);
+// EXTRA
+router.get(
+  "/progress",
+  authMiddleware.authenticate,
+  userController.getMyProgress
+);
 router.get("/:id", authMiddleware.authenticate, userController.getById);
 // PUT
 router.put("/:id", authMiddleware.authenticate, userController.update);

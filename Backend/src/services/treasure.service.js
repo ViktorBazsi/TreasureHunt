@@ -89,6 +89,43 @@ const cleanText = (text) => {
     .replace(/[.!?]+$/, ""); // eltávolítja a mondatvégi írásjelet
 };
 
+// const checkAnswer = async ({ treasureId, userId, answer }) => {
+//   const treasure = await prisma.treasure.findUnique({
+//     where: { id: treasureId },
+//   });
+
+//   if (!treasure) {
+//     throw new HttpError("Kincs nem található", 404);
+//   }
+
+//   const userAnswer = cleanText(answer);
+//   const correctAnswer = cleanText(treasure.correctAns);
+
+//   if (userAnswer !== correctAnswer) {
+//     throw new HttpError("Helytelen válasz", 400);
+//   }
+
+//   // helyes válasz → létrehozás vagy frissítés a progress táblában
+//   const progress = await prisma.userTreasureProgress.upsert({
+//     where: {
+//       userId_treasureId: {
+//         userId,
+//         treasureId,
+//       },
+//     },
+//     update: {
+//       isOpen: true,
+//     },
+//     create: {
+//       userId,
+//       treasureId,
+//       isOpen: true,
+//     },
+//   });
+
+//   return progress;
+// };
+// VOL.2:
 const checkAnswer = async ({ treasureId, userId, answer }) => {
   const treasure = await prisma.treasure.findUnique({
     where: { id: treasureId },
@@ -101,11 +138,12 @@ const checkAnswer = async ({ treasureId, userId, answer }) => {
   const userAnswer = cleanText(answer);
   const correctAnswer = cleanText(treasure.correctAns);
 
-  if (userAnswer !== correctAnswer) {
-    throw new HttpError("Helytelen válasz", 400);
+  const isCorrect = userAnswer === correctAnswer;
+
+  if (!isCorrect) {
+    return { isCorrect: false };
   }
 
-  // helyes válasz → létrehozás vagy frissítés a progress táblában
   const progress = await prisma.userTreasureProgress.upsert({
     where: {
       userId_treasureId: {
@@ -123,7 +161,7 @@ const checkAnswer = async ({ treasureId, userId, answer }) => {
     },
   });
 
-  return progress;
+  return { isCorrect: true, progress };
 };
 
 // BEGIN:

@@ -68,26 +68,56 @@ const destroy = async (req, res, next) => {
 
 // EXTRA
 // ANSWER:
+// const checkAnswer = async (req, res, next) => {
+//   const { id: treasureId } = req.params; // Treasure ID a URL-ben
+//   const { answer } = req.body; // answer a body-ban
+//   const userId = req.user?.id; // feltételezve, hogy auth middleware kitölti ezt
+
+//   if (!userId) {
+//     return res.status(401).json({ message: "Bejelentkezés szükséges" });
+//   }
+
+//   try {
+//     const progress = await treasureService.checkAnswer({
+//       treasureId,
+//       userId,
+//       answer,
+//     });
+//     res.status(200).json({ message: "Helyes válasz!", progress });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+// VOL.2:
 const checkAnswer = async (req, res, next) => {
-  const { id: treasureId } = req.params; // Treasure ID a URL-ben
-  const { answer } = req.body; // answer a body-ban
-  const userId = req.user?.id; // feltételezve, hogy auth middleware kitölti ezt
+  const { id: treasureId } = req.params;
+  const { answer } = req.body;
+  const userId = req.user?.id;
 
   if (!userId) {
     return res.status(401).json({ message: "Bejelentkezés szükséges" });
   }
 
   try {
-    const progress = await treasureService.checkAnswer({
+    const result = await treasureService.checkAnswer({
       treasureId,
       userId,
       answer,
     });
-    res.status(200).json({ message: "Helyes válasz!", progress });
+
+    if (!result.isCorrect) {
+      return res.status(200).json({ message: "Helytelen válasz" });
+    }
+
+    res.status(200).json({
+      message: "Helyes válasz!",
+      progress: result.progress,
+    });
   } catch (error) {
     next(error);
   }
 };
+
 
 // BEGIN:
 const begin = async (req, res, next) => {

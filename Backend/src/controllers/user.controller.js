@@ -74,10 +74,28 @@ const destroy = async (req, res, next) => {
   }
 };
 
+// EXTRA:
+const getMyProgress = async (req, res, next) => {
+  const userId = req.user?.id;
+
+  if (!userId) {
+    return res.status(401).json({ message: "Bejelentkezés szükséges" });
+  }
+
+  try {
+    const progress = await userService.getProgressByUserId(userId);
+    res.status(200).json(progress);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   create,
   list,
   getById,
   update,
   destroy,
+  // EXTRA:
+  getMyProgress,
 };
