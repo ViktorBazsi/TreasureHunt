@@ -13,11 +13,13 @@ router.get("/:id", treasureController.getById);
 router.put("/:id", treasureController.update);
 // DELETE
 router.delete("/:id", treasureController.destroy);
-// CHECK
+// ANSWER
 router.post(
   "/:id/check",
   authMiddleware.authenticate,
   treasureController.checkAnswer
 );
+// BEGIN
+router.post("/begin", authMiddleware.authenticate, treasureController.begin);
 
 export default router;

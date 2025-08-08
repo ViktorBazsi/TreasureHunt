@@ -67,6 +67,7 @@ const destroy = async (req, res, next) => {
 };
 
 // EXTRA
+// ANSWER:
 const checkAnswer = async (req, res, next) => {
   const { id: treasureId } = req.params; // Treasure ID a URL-ben
   const { answer } = req.body; // answer a body-ban
@@ -88,6 +89,22 @@ const checkAnswer = async (req, res, next) => {
   }
 };
 
+// BEGIN:
+const begin = async (req, res, next) => {
+  const userId = req.user?.id;
+
+  if (!userId) {
+    return res.status(401).json({ message: "Bejelentkezés szükséges" });
+  }
+
+  try {
+    const result = await treasureService.beginForUser(userId);
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   create,
   list,
@@ -96,4 +113,5 @@ export default {
   destroy,
   //   EXTRA
   checkAnswer,
+  begin,
 };

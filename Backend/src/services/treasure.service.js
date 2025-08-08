@@ -81,6 +81,7 @@ const destroy = async (id) => {
 };
 
 // EXTRA:
+// ANSWER:
 const cleanText = (text) => {
   return text
     .trim()
@@ -125,6 +126,51 @@ const checkAnswer = async ({ treasureId, userId, answer }) => {
   return progress;
 };
 
+// BEGIN:
+const beginForUser = async (userId) => {
+  const treasures = await prisma.treasure.findMany({
+    select: { id: true },
+  });
+
+  if (!treasures.length) {
+    throw new HttpError("Nincs elérhető kincs", 404);
+  }
+
+  const existingProgress = await prisma.userTreasureProgress.findMany({
+    where: {
+      userId,
+    },
+    select: {
+      treasureId: true,
+    },
+  });
+
+  const alreadyConnected = new Set(existingProgress.map((p) => p.treasureId));
+
+  const newProgressRecords = treasures
+    .filter((treasure) => !alreadyConnected.has(treasure.id))
+    .map((treasure) => ({
+      userId,
+      treasureId: treasure.id,
+      isOpen: false,
+    }));
+
+  if (newProgressRecords.length === 0) {
+    return {
+      message: "Már minden kincs hozzá van rendelve ehhez a felhasználóhoz.",
+    };
+  }
+
+  await prisma.userTreasureProgress.createMany({
+    data: newProgressRecords,
+  });
+
+  return {
+    message: "Kincsek összekapcsolva a felhasználóval",
+    count: newProgressRecords.length,
+  };
+};
+
 export default {
   create,
   list,
@@ -133,4 +179,5 @@ export default {
   destroy,
   //   EXTRA:
   checkAnswer,
+  beginForUser,
 };
