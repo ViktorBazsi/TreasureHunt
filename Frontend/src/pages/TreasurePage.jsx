@@ -21,7 +21,7 @@ function TreasuresPage() {
 
   return (
     <div className="section">
-      <h2 className="text-2xl text-c-secondary-dark font-bold mb-6">Kincsek</h2>
+      <h2 className="text-2xl text-c-secondary-dark font-bold mb-6">Kincseid</h2>
       <TreasuresList progress={progress} onTreasureOpened={fetchProgress} />
     </div>
   );

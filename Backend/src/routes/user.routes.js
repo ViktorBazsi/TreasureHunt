@@ -7,14 +7,14 @@ const router = express.Router();
 // POST
 router.post("/", userController.create);
 // GET
-router.get("/", authMiddleware.authenticate, userController.list);
+router.get("/", userController.list);
 // EXTRA
 router.get(
   "/progress",
   authMiddleware.authenticate,
   userController.getMyProgress
 );
-router.get("/:id", authMiddleware.authenticate, userController.getById);
+router.get("/:id", userController.getById);
 // PUT
 router.put("/:id", authMiddleware.authenticate, userController.update);
 // DELETE

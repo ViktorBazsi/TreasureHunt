@@ -18,8 +18,11 @@ function TreasureCard({ treasure, isOpen, onTreasureOpened }) {
           isOpen ? "bg-green-100" : "hover:shadow-lg"
         }`}
       >
-        <h4 className="text-lg text-c-primary-light font-semibold mb-2">Kincs #{treasure.number}</h4>
-        <p className="text-white">{treasure.question}</p>
+        <h3 className="text-lg text-c-primary-light font-semibold mb-2">
+          Kincs #{treasure.number}
+        </h3>
+        <p className="text-white"></p>    <p className="text-white text-2xl font-semibold">{treasure.question}</p>
+        <h4 className="text-white mt-4 font-extralight">Merre? {treasure.hint}</h4>
         {isOpen && (
           <p className="text-gray-100 mt-2">
             ✅ Helyes válasz: <strong>{treasure.correctAns}</strong>
