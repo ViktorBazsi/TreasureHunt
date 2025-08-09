@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AuthContext from "../contexts/AuthContext";
 import progressService from "../services/progress.service";
 import Button from "../components/ui/Button";
+import { toast } from "react-toastify";
 
 function LandingPage() {
   const { user } = useContext(AuthContext);
@@ -24,11 +25,13 @@ function LandingPage() {
   }, [user]);
 
   const handleStartOrContinue = async () => {
-    if (progress.length === 0) {
-      try {
-        await progressService.beginProgress();
-      } catch {}
+    try {
+      await progressService.beginProgress();
+    } catch (err) {
+      console.error("Hiba a játék kezdésekor:", err);
+      toast.error("Nem sikerült elindítani a játékot. Próbáld újra!");
     }
+
     navigate("/treasures");
   };
 
