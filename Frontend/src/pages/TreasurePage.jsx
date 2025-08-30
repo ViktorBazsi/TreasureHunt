@@ -43,7 +43,15 @@ function TreasuresPage() {
     fetchProgress();
   }, []);
 
-  if (loading) return <p className="text-center mt-8">Betöltés...</p>;
+  if (loading) {
+    return (
+      <div className="min-h-screen">
+        <div className="section page-loading">
+          <p className="text-black font-bold">Betöltés...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-yellow-50 to-white px-6 py-12">

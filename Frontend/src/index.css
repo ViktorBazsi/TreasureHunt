@@ -2,41 +2,138 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Alap app styling */
-:root {
-  color-scheme: light dark;
+/* ====== BASE: html/body/root, alap app stílus + háttér ====== */
+@layer base {
+  :root {
+    /* LIGHT (default) */
+    --bg-color: #fffdf5; /* nagyon halvány sárgás fehér */
+    --bg-gradient: radial-gradient(
+        60% 40% at 0% 0%,
+        rgba(250, 204, 21, 0.08),
+        transparent 60%
+      ),
+      linear-gradient(to bottom, #fff9e6 0%, #ffffff 60%); /* sárgás → fehér */
+
+    /* inverse card (marad) */
+    --inverse-start: #111827;
+    --inverse-end: #0f172a;
+  }
+
+  /* Opcionális dark téma: csak annyi kell, hogy <body class="theme-dark"> */
+  .theme-dark {
+    --bg-color: #0f1220;
+    --bg-gradient: radial-gradient(
+        50% 35% at 100% 0%,
+        rgba(250, 204, 21, 0.12),
+        transparent 70%
+      ),
+      linear-gradient(180deg, #0b0f19 0%, #111827 100%);
+    --inverse-start: #0f172a;
+    --inverse-end: #0b0f19;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    /* csak a szöveg Tailwindből, a háttér natív CSS-sel megy,
+       hogy ne írják felül egymást */
+    @apply text-c-text;
+    background-color: var(--bg-color);
+    background-image: var(--bg-gradient);
+    background-attachment: fixed; /* finom parallax érzés, nincs “villanás” */
+    background-size: cover;
+  }
 }
 
-html, body, #root {
-  height: 100%;
-}
+/* ====== COMPONENTS: saját, újrahasznosítható osztályok ====== */
+@layer components {
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-2xl font-semibold transition;
+  }
+  .btn-primary {
+    @apply bg-c-primary text-c-text hover:bg-c-primary-light;
+  }
+  .btn-secondary {
+    @apply bg-c-secondary text-c-background hover:bg-c-secondary-light;
+  }
+  .btn-accent {
+    @apply bg-c-accent text-c-background hover:brightness-110;
+  }
+  .btn-block {
+    @apply w-full px-6 py-3 text-lg;
+  }
 
-body {
-  @apply bg-c-background text-c-text;
-}
+  /* Cards */
+  .card {
+    @apply p-4 rounded-xl shadow bg-white/90 text-gray-800;
+  }
 
-/* Reusable utility-k */
-.btn {
-  @apply inline-flex items-center justify-center rounded-2xl font-semibold transition;
-}
-.btn-primary {
-  @apply bg-c-primary text-c-text hover:bg-c-primary-light;
-}
-.btn-secondary {
-  @apply bg-c-secondary text-c-background hover:bg-c-secondary-light;
-}
-.btn-accent {
-  @apply bg-c-accent text-c-background hover:brightness-110;
-}
-.btn-block {
-  @apply w-full px-6 py-3 text-lg;
-}
-.card {
-  @apply p-4 rounded-xl shadow bg-white/90 text-gray-800;
-}
-.card-inverse {
-  @apply p-4 rounded-xl shadow bg-c-secondary-darkest text-c-text;
-}
-.section {
-  @apply container py-8;
+  /* Modern InverseCard – már a változókat használja (light/dark-hoz is passzol) */
+  .card-inverse {
+    position: relative;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    color: #fff;
+    background: radial-gradient(
+        120% 120% at 0% 0%,
+        rgba(255, 255, 255, 0.06) 0%,
+        rgba(255, 255, 255, 0.02) 40%,
+        rgba(0, 0, 0, 0) 100%
+      ),
+      linear-gradient(180deg, var(--inverse-start) 0%, var(--inverse-end) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease,
+      border-color 0.2s ease, background 0.2s ease;
+  }
+  .card-inverse:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    border-color: rgba(250, 204, 21, 0.6);
+  }
+  .card-inverse:focus-within {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.35),
+      0 12px 28px rgba(0, 0, 0, 0.25);
+    border-color: rgba(250, 204, 21, 0.8);
+  }
+  .card-inverse::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    background: radial-gradient(
+      60% 40% at 0% 0%,
+      rgba(250, 204, 21, 0.12),
+      transparent 70%
+    );
+  }
+  .card-inverse a {
+    color: #fde047;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: rgba(253, 224, 71, 0.4);
+  }
+  .card-inverse a:hover {
+    color: #facc15;
+    text-decoration-color: rgba(250, 204, 21, 0.7);
+  }
+
+  /* Layout helper */
+  .section {
+    @apply container py-8;
+  }
+
+  /* Egységes loader blokk (betöltésnél ne legyen “fekete képernyő”) */
+  .page-loading {
+    @apply min-h-[60vh] flex items-center justify-center;
+  }
 }

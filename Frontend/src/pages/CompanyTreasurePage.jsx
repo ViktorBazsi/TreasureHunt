@@ -18,8 +18,11 @@ function CompanyTreasuresPage() {
       try {
         const companyData = await companyService.getCompanyById(id);
         const progressData = await progressService.getMyProgress();
+
         setCompany(companyData);
         setProgress(progressData);
+
+        // ⬇️ Logika változatlan – a backend jelenlegi mezőnevével dolgozunk
         const merged = (companyData.tresures || []).map((t) => ({
           ...t,
           isOpen: !!progressData.find((p) => p.treasureId === t.id && p.isOpen),
@@ -31,29 +34,68 @@ function CompanyTreasuresPage() {
     })();
   }, [id]);
 
-  if (loading) return <p className="section">Betöltés...</p>;
-  if (!company) return <p className="section">Cég nem található</p>;
+  // if (loading) return <p className="section">Betöltés...</p>;
+  if (loading) {
+    return (
+      <div className="min-h-screen">
+        <div className="section page-loading">
+          <p className="text-black font-bold">Betöltés...</p>
+        </div>
+      </div>
+    );
+  }
+  if (!company)
+    return (
+      <div>
+        <p className="text-black section">Cég nem található</p>;
+      </div>
+    );
 
   return (
-    <div className="section">
-      <h2 className="text-2xl font-bold text-c-secondary mb-6">
-        🎁 {company.name} kincsei
-      </h2>
+    <div className="min-h-screen bg-gradient-to-b from-yellow-50 to-white">
+      <div className="section">
+        {/* Fejléc blokk – világos, modern, a day designhoz igazítva */}
+        <div className="mb-8 bg-white border border-yellow-300 rounded-xl shadow-sm p-6">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-black">
+            🎭 {company.name} – kincsei
+          </h2>
 
-      <div className="grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 gap-6">
-        {treasures.map((treasure) => (
-          <TreasureCard
-            key={treasure.id}
-            treasure={treasure}
-            isOpen={treasure.isOpen}
-          />
-        ))}
-      </div>
+          {/* Ajándék, ha van megadva az adott társulathoz */}
+          {company.gift && (
+            <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-yellow-100 border border-yellow-300 px-3 py-1">
+              <span className="text-sm font-semibold text-black">
+                🎁 Ajándék
+              </span>
+              <span className="text-sm text-gray-800">{company.gift}</span>
+            </div>
+          )}
 
-      <div className="mt-12 max-w-md mx-auto">
-        <Button block onClick={() => navigate(-1)}>
-           Vissza
-        </Button>
+          {/* Rövid bevezető */}
+          <p className="mt-4 text-gray-700">
+            Válaszolj helyesen a kérdésekre, hogy kinyisd a kincseket. Ha
+            mindhárom kincset megszerzed ennél a társulatnál, jutalom vár —
+            gyűjtsd össze mind a nyolc társulat kincseit a főnyeremény
+            sorsolásához! 🎁
+          </p>
+        </div>
+
+        {/* Kincsek rácsa – a TreasureCard már a day design szerint frissítve */}
+        <div className="grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 gap-8">
+          {treasures.map((treasure) => (
+            <TreasureCard
+              key={treasure.id}
+              treasure={treasure}
+              isOpen={treasure.isOpen}
+            />
+          ))}
+        </div>
+
+        {/* Vissza gomb – a saját Button komponensed, block-kal, középre igazítva */}
+        <div className="mt-12 max-w-md mx-auto">
+          <Button block onClick={() => navigate(-1)}>
+            Vissza
+          </Button>
+        </div>
       </div>
     </div>
   );
