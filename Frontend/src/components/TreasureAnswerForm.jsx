@@ -49,7 +49,7 @@ function TreasureAnswerForm({ treasureId, disabled, onSuccess }) {
           <div className="text-left">
             <label
               htmlFor="answer"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium mb-1"
             >
               Válasz
             </label>

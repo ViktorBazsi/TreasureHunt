@@ -1,7 +1,8 @@
 import { useContext } from "react";
-import { FiLogIn, FiUser, FiBox, FiBriefcase } from "react-icons/fi";
+import { FiLogIn, FiUser, FiBox, FiBriefcase, FiGift } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../contexts/AuthContext";
+import ThemeToggle from "./ThemeToggle";
 
 function Header() {
   const { user, logout } = useContext(AuthContext);
@@ -32,13 +33,17 @@ function Header() {
         </h1>
 
         {!user ? (
-          <button
-            onClick={() => navigate("/login")}
-            className="text-c-primary hover:text-c-primary-light transition"
-            title="Bejelentkezés"
-          >
-            <FiUser className="w-6 h-6" />
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate("/login")}
+              className="text-c-primary hover:text-c-primary-light transition"
+              title="Bejelentkezés"
+            >
+              <FiUser className="w-6 h-6" />
+            </button>
+            {/* Téma váltó mindig elérhető */}
+            <ThemeToggle className="px-3 py-2" />
+          </div>
         ) : (
           <div className="flex gap-4 items-center">
             <button
@@ -48,6 +53,7 @@ function Header() {
             >
               <FiBox className="w-6 h-6" />
             </button>
+
             <button
               onClick={() => navigate("/companies")}
               className="text-c-secondary-light hover:text-c-secondary-dark transition"
@@ -55,6 +61,16 @@ function Header() {
             >
               <FiBriefcase className="w-6 h-6" />
             </button>
+
+            {/* Opcionális: nyeremények gyorslink */}
+            <button
+              onClick={() => navigate("/prizes")}
+              className="text-c-secondary-light hover:text-c-secondary-dark transition"
+              title="Nyeremények"
+            >
+              <FiGift className="w-6 h-6" />
+            </button>
+
             <button
               onClick={handleLogout}
               className="text-c-warning hover:text-c-warning-dark transition"
@@ -62,6 +78,9 @@ function Header() {
             >
               <FiLogIn className="w-6 h-6" />
             </button>
+
+            {/* Téma váltó a sor végén */}
+            <ThemeToggle className="px-3 py-2" />
           </div>
         )}
       </div>

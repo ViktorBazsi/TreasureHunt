@@ -15,8 +15,8 @@ function TreasureCard({ treasure, isOpen, onTreasureOpened }) {
         onClick={() => setIsModalOpen(true)}
         className={`cursor-pointer transition rounded-xl p-6 shadow-md hover:shadow-lg ${
           isOpen
-            ? "bg-green-50 border border-green-300"
-            : "bg-white border border-yellow-300"
+            ? "bg-green-50/10 border border-green-300"
+            : " border border-yellow-300"
         }`}
       >
         <h3 className="text-lg font-semibold text-black mb-2">

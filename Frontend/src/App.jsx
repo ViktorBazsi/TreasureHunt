@@ -13,6 +13,7 @@ import RegistrationPage from "./pages/RegistrationPage";
 import TreasuresPage from "./pages/TreasurePage";
 import CompanyPage from "./pages/CompanyPage";
 import CompanyTreasuresPage from "./pages/CompanyTreasurePage";
+import PrizesPage from "./pages/PrizesPage";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
             path="/companies/:id/treasures"
             element={<CompanyTreasuresPage />}
           />
+          <Route path="/prizes" element={<PrizesPage />} />
         </Routes>
       </AuthProvider>
     </Router>

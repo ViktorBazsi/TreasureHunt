@@ -36,7 +36,7 @@ function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-yellow-100 to-white flex items-center justify-center px-6">
+    <div className="min-h-screen  flex items-center justify-center px-6">
       <div className="max-w-3xl text-center space-y-6 py-12">
         {/* Hero szöveg */}
         <h1 className="text-4xl md:text-5xl font-extrabold text-black">

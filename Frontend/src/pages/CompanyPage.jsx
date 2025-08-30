@@ -31,7 +31,7 @@ function CompanyPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-yellow-50 to-white">
+    <div className="min-h-screen ">
       <div className="section">
         <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-3 text-center">
           Erzsébetvárosi független színházak

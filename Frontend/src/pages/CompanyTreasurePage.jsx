@@ -52,17 +52,17 @@ function CompanyTreasuresPage() {
     );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-yellow-50 to-white">
+    <div className="min-h-screen ">
       <div className="section">
         {/* Fejléc blokk – világos, modern, a day designhoz igazítva */}
-        <div className="mb-8 bg-white border border-yellow-300 rounded-xl shadow-sm p-6">
+        <div className="mb-8 border border-yellow-300 rounded-xl shadow-sm p-6">
           <h2 className="text-2xl md:text-3xl font-extrabold text-black">
             🎭 {company.name} – kincsei
           </h2>
 
           {/* Ajándék, ha van megadva az adott társulathoz */}
           {company.gift && (
-            <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-yellow-100 border border-yellow-300 px-3 py-1">
+            <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-yellow-300 px-3 py-1">
               <span className="text-sm font-semibold text-black">
                 🎁 Ajándék
               </span>

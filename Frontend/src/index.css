@@ -49,6 +49,24 @@
   }
 }
 
+@layer utilities {
+  /* --- Dark mode: automatikus szöveg-kivilágosítás --- */
+  :root.theme-dark .text-black        { color: #f3f4f6 !important; } /* gray-100 */
+  :root.theme-dark .text-gray-800     { color: #e5e7eb !important; } /* gray-200 */
+  :root.theme-dark .text-gray-700     { color: #e5e7eb !important; } /* gray-200 */
+  :root.theme-dark .text-gray-600     { color: #d1d5db !important; } /* gray-300 */
+  :root.theme-dark .text-gray-500     { color: #cbd5e1 !important; } /* slate-300 */
+  :root.theme-dark .text-gray-400     { color: #94a3b8 !important; } /* slate-400 */
+  :root.theme-dark .placeholder-gray-400::placeholder { color: #9ca3af !important; }
+
+  /* ha valahol direkt fekete a cím színe, finoman világosítsuk */
+  :root.theme-dark h1.text-black,
+  :root.theme-dark h2.text-black,
+  :root.theme-dark h3.text-black {
+    color: #f3f4f6 !important;
+  }
+}
+
 /* ====== COMPONENTS: saját, újrahasznosítható osztályok ====== */
 @layer components {
   /* Buttons */

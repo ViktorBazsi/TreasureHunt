@@ -54,7 +54,7 @@ function TreasuresPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-yellow-50 to-white px-6 py-12">
+    <div className="min-h-screen  px-6 py-12">
       <div className="max-w-5xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-6">
           Kincseid

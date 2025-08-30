@@ -12,14 +12,14 @@ function TreasureCardModal({ treasure, isOpen, onClose, onSuccess }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/50 backdrop-blur-sm">
       <div
-        className={`bg-white rounded-2xl shadow-2xl w-full max-w-lg relative transform transition-all duration-300 ease-out ${
+        className={`bg-white/10 rounded-2xl shadow-2xl w-full max-w-lg relative transform transition-all duration-300 ease-out ${
           visible ? "opacity-100 scale-100" : "opacity-0 scale-95"
         }`}
       >
         {/* Bezárás gomb */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition text-xl"
+          className="absolute top-4 right-4 hover:text-gray-600 transition text-xl"
           aria-label="Bezárás"
         >
           ✕
@@ -34,11 +34,11 @@ function TreasureCardModal({ treasure, isOpen, onClose, onSuccess }) {
 
         {/* Tartalom */}
         <div className="p-6 text-center">
-          <p className="mb-6 text-lg text-gray-800">{treasure.question}</p>
+          <p className="mb-6 text-lg ">{treasure.question}</p>
 
           {/* Ha nyitva van */}
           {isOpen ? (
-            <div className="bg-green-50 border border-green-300 rounded-xl p-4 shadow-inner">
+            <div className="bg-green-100/40 border border-green-300 rounded-xl p-4 shadow-inner">
               <p className="text-green-700 font-semibold mb-2">
                 ✅ Ez a kincs már fel van nyitva!
               </p>
@@ -49,7 +49,7 @@ function TreasureCardModal({ treasure, isOpen, onClose, onSuccess }) {
             </div>
           ) : (
             <>
-              <p className="mb-4 text-sm text-gray-600 italic">
+              <p className="mb-4 text-sm  italic">
                 Add meg a válaszodat, hogy kinyisd a kincset!
               </p>
               <TreasureAnswerForm
