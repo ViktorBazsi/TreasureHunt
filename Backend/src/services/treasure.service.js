@@ -209,6 +209,21 @@ const beginForUser = async (userId) => {
   };
 };
 
+// Lekérdezi a bejelentkezett userhez tartozó kincseket a progress adatokkal együtt
+const getTreasuresByUserId = async (userId) => {
+  return prisma.treasure.findMany({
+    include: {
+      progress: {
+        where: { userId },
+      },
+      company: true,
+    },
+    orderBy: {
+      number: "asc",
+    },
+  });
+};
+
 export default {
   create,
   list,
@@ -218,4 +233,5 @@ export default {
   //   EXTRA:
   checkAnswer,
   beginForUser,
+  getTreasuresByUserId,
 };

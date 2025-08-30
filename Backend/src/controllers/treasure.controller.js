@@ -118,7 +118,6 @@ const checkAnswer = async (req, res, next) => {
   }
 };
 
-
 // BEGIN:
 const begin = async (req, res, next) => {
   const userId = req.user?.id;
@@ -135,6 +134,15 @@ const begin = async (req, res, next) => {
   }
 };
 
+const listByUser = async (req, res, next) => {
+  try {
+    const treasures = await treasureService.getTreasuresByUserId(req.user.id);
+    res.json(treasures);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   create,
   list,
@@ -144,4 +152,5 @@ export default {
   //   EXTRA
   checkAnswer,
   begin,
+  listByUser,
 };

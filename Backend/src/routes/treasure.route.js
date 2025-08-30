@@ -8,6 +8,7 @@ const router = express.Router();
 router.post("/", treasureController.create);
 // GET
 router.get("/", treasureController.list);
+router.get("/my", authMiddleware.authenticate, treasureController.listByUser);
 router.get("/:id", treasureController.getById);
 // PUT
 router.put("/:id", treasureController.update);

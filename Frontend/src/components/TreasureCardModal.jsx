@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { InverseCard } from "./ui/Card";
 import TreasureAnswerForm from "./TreasureAnswerForm";
 
 function TreasureCardModal({ treasure, isOpen, onClose, onSuccess }) {
   const [visible, setVisible] = useState(false);
+
   useEffect(() => {
     const t = setTimeout(() => setVisible(true), 10);
     return () => clearTimeout(t);
@@ -11,30 +11,56 @@ function TreasureCardModal({ treasure, isOpen, onClose, onSuccess }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/50 backdrop-blur-sm">
-      <InverseCard
-        className={`w-full max-w-lg relative transform transition-all duration-300 ease-out ${
+      <div
+        className={`bg-white rounded-2xl shadow-2xl w-full max-w-lg relative transform transition-all duration-300 ease-out ${
           visible ? "opacity-100 scale-100" : "opacity-0 scale-95"
         }`}
       >
+        {/* Bezárás gomb */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition"
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition text-xl"
           aria-label="Bezárás"
         >
-          ❌
+          ✕
         </button>
 
-        <h2 className="text-2xl font-bold mb-2 text-center text-c-primary-dark">
-          Kincs #{treasure.number}
-        </h2>
-        <p className="mb-4 text-center text-white">{treasure.question}</p>
+        {/* Fejléc */}
+        <div className="bg-yellow-400 rounded-t-2xl p-6 text-center">
+          <h2 className="text-2xl font-extrabold text-black">
+            Kincs #{treasure.number}
+          </h2>
+        </div>
 
-        <TreasureAnswerForm
-          treasureId={treasure.id}
-          disabled={isOpen}
-          onSuccess={onSuccess}
-        />
-      </InverseCard>
+        {/* Tartalom */}
+        <div className="p-6 text-center">
+          <p className="mb-6 text-lg text-gray-800">{treasure.question}</p>
+
+          {/* Ha nyitva van */}
+          {isOpen ? (
+            <div className="bg-green-50 border border-green-300 rounded-xl p-4 shadow-inner">
+              <p className="text-green-700 font-semibold mb-2">
+                ✅ Ez a kincs már fel van nyitva!
+              </p>
+              <p className="text-gray-700">
+                Helyes válasz:{" "}
+                <span className="font-bold">{treasure.correctAns}</span>
+              </p>
+            </div>
+          ) : (
+            <>
+              <p className="mb-4 text-sm text-gray-600 italic">
+                Add meg a válaszodat, hogy kinyisd a kincset!
+              </p>
+              <TreasureAnswerForm
+                treasureId={treasure.id}
+                disabled={isOpen}
+                onSuccess={onSuccess}
+              />
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
